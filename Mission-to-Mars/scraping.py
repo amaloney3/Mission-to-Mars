@@ -20,13 +20,12 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now(),
         "hemispheres": hemisphere_data,
+        "last_modified": dt.datetime.now()
     }
 
     # Stop webdriver and return data
     browser.quit()
-    print(data)
     return data
 
 
@@ -50,8 +49,7 @@ def mars_news(browser):
         # Use the parent element to find the first 'a' tag and save it as 'news_title'
         news_title = slide_elem.find('div', class_='content_title').get_text()
         # Use the parent element to find the paragraph text
-        news_p = slide_elem.find(
-            'div', class_='article_teaser_body').get_text()
+        news_p = slide_elem.find('div', class_='article_teaser_body').get_text()
 
     except AttributeError:
         return None, None
@@ -85,58 +83,56 @@ def featured_image(browser):
 
     return img_url
 
-
 def mars_facts():
     # Add try/except for error handling
     try:
         # Use 'read_html' to scrape the facts table into a dataframe
-        df = pd.read_html(
-            'https://data-class-mars-facts.s3.amazonaws.com/Mars_Facts/index.html')[0]
+        df = pd.read_html('https://data-class-mars-facts.s3.amazonaws.com/Mars_Facts/index.html')[0]
 
     except BaseException:
         return None
 
+    # Assign columns and set index of dataframe
+    df.columns=['Description', 'Mars', 'Earth']
+    df.set_index('Description', inplace=True)
+
+    # Convert dataframe into HTML format, add bootstrap
+    return df.to_html(classes="table table-striped")
+
 
 def mars_hemispheres(browser):
 
-
-    #  Use browser to visit the URL
+    # 1. Use browser to visit the URL 
     url = 'https://marshemispheres.com/'
 
     browser.visit(url)
 
 
-    # Create a list to hold the images and titles.
+# 2. Create a list to hold the images and titles.
     hemisphere_image_urls = []
 
-    # Write code to retrieve the image urls and titles for each hemisphere.
+# 3. Write code to retrieve the image urls and titles for each hemisphere.
     links = browser.find_by_css('a.product-item img')
+    print(links)
     for link in range(len(links)):
         temp = {}
         browser.find_by_css('a.product-item img')[link].click()
-        ele = browser.links.find_by_text('Sample').first
+        ele=browser.links.find_by_text('Sample').first
+        print(ele)
         temp['image_url'] = ele['href']
         temp['title'] = browser.find_by_css('h2.title').text
         hemisphere_image_urls.append(temp)
     browser.back()
 
 
-# Print the list that holds the dictionary of each image url and title.
+# 4. Print the list that holds the dictionary of each image url and title.
     return hemisphere_image_urls
 
-def table():
-    pass
-    # Quit the browser
-    ### browser.quit()
 
-    # Assign columns and set index of dataframe
-    ###df.columns = ['Description', 'Mars', 'Earth']
-    ###df.set_index('Description', inplace=True)
+# 5. Quit the browser
 
-    # Convert dataframe into HTML format, add bootstrap
-    ###return df.to_html(classes="table table-striped")
 
-if __name__ == "__main__":
+    if __name__ == "__main__":
 
     # If running as script, print scraped data
-    print(scrape_all())
+        print(scrape_all())
