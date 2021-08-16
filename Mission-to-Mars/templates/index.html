@@ -13,14 +13,14 @@
   <body>
     <div class="container">
       <!-- Add Jumbotron to Header -->
-      <div class="jumbotron text-center">
+      <div class="col-xs-12">
         <h1>Mission to Mars</h1>
         <!-- Add a button to activate scraping script -->
-        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+        <p><a class="btn btn-danger btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
       </div>
       <!-- Add section for Mars News -->
       <div class="row" id="mars-news">
-        <div class="col-md-12">
+        <div class="col-xs-10">
           <div class="media">
             <div class="media-body">
               <h2>Latest Mars News</h2>
@@ -32,7 +32,7 @@
       </div>
       <!-- Section for Featured Image and Facts table -->
       <div class="row" id="mars-featured-image">
-        <div class="col-md-8">
+        <div class="col-xs-10">
           <h2>Featured Mars Image</h2>
           <img
             src="{{mars.featured_image }}"
@@ -40,10 +40,10 @@
             alt="Responsive image"
           />
         </div>
-        <div class="col-md-4">
+        <div class="col-xs-10">
           <!-- Mars Facts -->
           <div class="row" id="mars-facts">
-            <h4>Mars Facts</h4>
+            <h2>Mars Facts</h2>
             {{ mars.facts | safe }}
           </div>
         </div>
@@ -51,9 +51,16 @@
     </div>
     <!-- Section for Hemisphere Images and Titles -->
     <div class="row" id="hemisphere-images">
-          <h6>Hemispheres</h6>
-          {% for hemisphere in mars.hemispheres %}
-          {% endfor %}
+      <div class="col-xs-10">
+          <h3> Mars Hemispheres</h3>
+            {% for hemisphere in mars.hemispheres %}
+                <img
+                src="{{ hemisphere.image_url }}"
+                class="img-thumbnail"
+                alt="Responsive image"
+                />
+            <li> {{ hemisphere.title }} </li>
+            {% endfor %}
     </div>
   </body>
 </html>
