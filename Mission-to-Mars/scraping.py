@@ -105,16 +105,16 @@ def mars_hemispheres(browser):
     # 1. Use browser to visit the URL 
     url = 'https://marshemispheres.com/'
 
-    browser.visit(url)
+    browser.visit(url + 'index.html')
 
 
 # 2. Create a list to hold the images and titles.
     hemisphere_image_urls = []
 
 # 3. Write code to retrieve the image urls and titles for each hemisphere.
-    links = browser.find_by_css('a.product-item img')
-    print(links)
-    for link in range(len(links)):
+    #links = browser.find_by_css('a.product-item img')
+    #print(links)
+    for link in range(4):
         temp = {}
         browser.find_by_css('a.product-item img')[link].click()
         ele=browser.links.find_by_text('Sample').first
@@ -122,7 +122,7 @@ def mars_hemispheres(browser):
         temp['image_url'] = ele['href']
         temp['title'] = browser.find_by_css('h2.title').text
         hemisphere_image_urls.append(temp)
-    browser.back()
+        browser.back()
 
 
 # 4. Print the list that holds the dictionary of each image url and title.
@@ -132,7 +132,7 @@ def mars_hemispheres(browser):
 # 5. Quit the browser
 
 
-    if __name__ == "__main__":
+if __name__ == "__main__":
 
     # If running as script, print scraped data
-        print(scrape_all())
+    print(scrape_all())
